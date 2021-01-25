@@ -80,7 +80,7 @@ jobs:
       - name: Run a one-line script
         env:
           ENV_NAME: ${{secrets.ENV_NAME}}         
-        run: echo DEPLOY_TEST '$ENV_NAME' 
+        run: echo DEPLOY_TEST $ENV_NAME
     
   deploy_prod:
     needs: [build, deploy_test]
@@ -90,5 +90,6 @@ jobs:
       - name: Run a one-line script
         env:
           ENV_NAME: ${{secrets.ENV_NAME}} 
-        run: echo DEPLOY_PROD '$ENV_NAME'
+        run: |
+          echo DEPLOY_PROD $ENV_NAME
   
