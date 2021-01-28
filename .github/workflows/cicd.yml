@@ -36,6 +36,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
          
+      - name: Output Run ID
+        run: echo ${{ github.run_id }}
+      - name: Output Run Number
+        run: echo ${{ github.run_number }}
+                 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -80,15 +85,17 @@ jobs:
       - name: Run a one-line script
         env:
           ENV_NAME: ${{secrets.ENV_NAME}}         
-        run: echo DEPLOY_TEST '$ENV_NAME' 
+        run: echo DEPLOY_TEST $ENV_NAME
     
   deploy_prod:
     needs: [build, deploy_test]
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod
     steps:
       - name: Run a one-line script
         env:
           ENV_NAME: ${{secrets.ENV_NAME}} 
-        run: echo DEPLOY_PROD '$ENV_NAME'
+        run: |
+          echo DEPLOY_PROD $ENV_NAME
   
